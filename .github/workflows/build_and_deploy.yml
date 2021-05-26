@@ -169,7 +169,7 @@ jobs:
             make version bdist_wheel && \
             pip install --pre --no-index --find-links dist/ pmdarima && \
             pytest --showlocals --durations=20 --pyargs pmdarima --benchmark-skip && \
-            make version sdist && \
-            pip install dist/$(ls dist | grep tar) && \
+            #make version sdist && \
+            #pip install dist/$(ls dist | grep tar) && \
             deactivate'
         
