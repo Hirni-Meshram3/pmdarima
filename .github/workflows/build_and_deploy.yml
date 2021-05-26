@@ -164,8 +164,8 @@ jobs:
             source .env/bin/activate && \
             python -m pip install --upgrade pip && \
             python -m pip install numpy cython scipy && \
-            #pip install -r requirements.txt && \
-            #pip install -r build_tools/build_requirements.txt && \
+            pip install -r requirements.txt && \
+            pip install -r build_tools/build_requirements.txt && \
             make version bdist_wheel && \
             pip install --pre --no-index --find-links dist/ pmdarima && \
             pytest --showlocals --durations=20 --pyargs pmdarima --benchmark-skip && \
