@@ -169,7 +169,19 @@ jobs:
             pip install --pre --no-index --find-links dist/ pmdarima && \
             pytest --showlocals --durations=20 --pyargs pmdarima --benchmark-skip && \
             deactivate'
+    - name: Ensuring VERSION file existis
+      id: version_check  # Need this to refer to output below
+      run: |
+          if [ -f "${GITHUB_WORKSPACE}/pmdarima/VERSION" ]; then
+            echo "VERSION file exists"
+            echo "::set-output name=version_exists::true"
+          else
+            echo "VERSION file does not exist"
+            echo "::set-output name=version_exists::false"
+          fi
+      shell: bash
     - name: Deploying to PyPI
+      if: startsWith(github.ref, 'refs/tags') && success() && steps.version_check.outputs.version_exists == 'true'
       run: |
           chmod +x build_tools/github/deploy.sh
           ./build_tools/github/deploy.sh
