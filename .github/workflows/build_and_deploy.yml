@@ -140,7 +140,7 @@ jobs:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
   test-aarch64:
-    name: "Test ${{ matrix.pyver }} aarch64"
+    name: "Build and deploy ${{ matrix.pyver }} aarch64"
     strategy:
       matrix:
         pyver: [cp36-cp36m, cp37-cp37m, cp38-cp38, cp39-cp39]
@@ -169,4 +169,11 @@ jobs:
             pip install --pre --no-index --find-links dist/ pmdarima && \
             pytest --showlocals --durations=20 --pyargs pmdarima --benchmark-skip && \
             deactivate'
-      
+    - name: Deploying to PyPI
+      run: |
+          chmod +x build_tools/github/deploy.sh
+          ./build_tools/github/deploy.sh
+      shell: bash
+      env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}      
