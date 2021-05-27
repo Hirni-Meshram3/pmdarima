@@ -165,12 +165,8 @@ jobs:
             python -m pip install --upgrade pip && \
             pip install -r requirements.txt && \
             pip install -r build_tools/build_requirements.txt && \
-            pip install python-dateutil && \
-            pip install dateutils && \
             make version bdist_wheel && \
             pip install --pre --no-index --find-links dist/ pmdarima && \
             pytest --showlocals --durations=20 --pyargs pmdarima --benchmark-skip && \
-            #make version sdist && \
-            #pip install dist/$(ls dist | grep tar) && \
             deactivate'
       
