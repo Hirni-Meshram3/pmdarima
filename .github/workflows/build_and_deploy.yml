@@ -124,6 +124,7 @@ jobs:
             echo "VERSION file exists"
             echo "::set-output name=version_exists::true"
           else
+            echo ${GITHUB_WORKSPACE}
             echo "VERSION file does not exist"
             echo "::set-output name=version_exists::false"
           fi
@@ -163,7 +164,6 @@ jobs:
             ${{ env.img }} \
             bash -exc '${{ env.py }} -m pip install virtualenv && ${{ env.py }} -m venv .env && \
             source .env/bin/activate && \
-            echo "${GITHUB_WORKSPACE}" && \
             python -m pip install --upgrade pip && \
             pip install -r requirements.txt && \
             pip install -r build_tools/build_requirements.txt && \
