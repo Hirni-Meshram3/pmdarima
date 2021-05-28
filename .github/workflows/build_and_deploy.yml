@@ -144,13 +144,13 @@ jobs:
     name: "Build and Deploy (aarch64 ${{ matrix.pyver }})"
     strategy:
       matrix:
-        pyver: [cp36-cp36m, cp37-cp37m, cp38-cp38, cp39-cp39]
-        arch: [aarch64]
+        pyver: [cp36-cp36m]
+        #, cp37-cp37m, cp38-cp38, cp39-cp39
       fail-fast: false
     runs-on: ubuntu-latest
     env:
       py: /opt/python/${{ matrix.pyver }}/bin/python
-      img: quay.io/pypa/manylinux2014_${{ matrix.arch }}
+      img: quay.io/pypa/manylinux2014_aarch64
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -163,6 +163,7 @@ jobs:
             ${{ env.img }} \
             bash -exc '${{ env.py }} -m pip install virtualenv && ${{ env.py }} -m venv .env && \
             source .env/bin/activate && \
+            echo ${GITHUB_WORKSPACE} && \
             python -m pip install --upgrade pip && \
             pip install -r requirements.txt && \
             pip install -r build_tools/build_requirements.txt && \
@@ -174,6 +175,7 @@ jobs:
       id: version_check  # Need this to refer to output below
       run: |
           if [ -f "${GITHUB_WORKSPACE}/pmdarima/VERSION" ]; then
+            echo ${GITHUB_WORKSPACE}
             echo "VERSION file exists"
             echo "::set-output name=version_exists::true"
           else
